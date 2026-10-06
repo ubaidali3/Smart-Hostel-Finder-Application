@@ -1,5 +1,5 @@
 import express from "express";
-import { createNotice, getMyNotices, getWardenNotices } from "../controller/notice.controller.js";
+import { createNotice, deleteNotice, getMyNotices, getWardenNotices } from "../controller/notice.controller.js";
 import { authorize,protect } from "../middleware/auth.middlerware.js";
 
 
@@ -13,6 +13,11 @@ noticeRouter.get(
   authorize('warden'),
   getWardenNotices
 );
-
+noticeRouter.delete(
+  "/:id",
+  protect,
+  authorize("warden"),
+  deleteNotice
+);
 
 export default noticeRouter;
