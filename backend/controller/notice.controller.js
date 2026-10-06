@@ -121,45 +121,6 @@ const getWardenNotices = async (req, res) => {
     });
   }
 };
-const deleteNotice = async (req, res) => {
-  try {
-    const { id } = req.params;
 
-    // Notice find karo
-    const notice = await Notice.findById(id);
 
-    if (!notice) {
-      return res.status(404).json({
-        success: false,
-        message: "Notice not found",
-      });
-    }
-
-    // Check karo notice isi logged-in warden ka hai
-    if (notice.createdBy.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: "You are not allowed to delete this notice",
-      });
-    }
-
-    // Database se delete
-    await Notice.findByIdAndDelete(id);
-
-    return res.status(200).json({
-      success: true,
-      message: "Notice deleted successfully",
-    });
-
-  } catch (error) {
-    console.error("Delete Notice Error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Server error",
-      error: error.message,
-    });
-  }
-};
-
-export { createNotice ,getMyNotices,getWardenNotices, deleteNotice};
+export { createNotice ,getMyNotices,getWardenNotices};
