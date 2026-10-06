@@ -19,7 +19,17 @@ const port =process.env.PORT
 connectDb()
 connectCloudinary()
 app.use(express.json())
-app.use(cors())
+// app.use(cors())
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://smart-hostel-finder-application-cgj.vercel.app",
+    ],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 
 app.use('/api/user',userRouter)
