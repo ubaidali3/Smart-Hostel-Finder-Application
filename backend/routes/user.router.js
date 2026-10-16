@@ -1,12 +1,35 @@
-import {getProfile, loginUser, regitserUser} from '../controller/user.controller.js'
+import express from "express";
 
-import express from 'express'
-import { protect } from '../middleware/auth.middlerware.js'
+import {
+  requestOtp,
+  verifyOtp,
+  loginUser,
+  getProfile,
+} from "../controller/user.controller.js";
 
-const userRouter=express.Router()
+import { protect } from "../middleware/auth.middlerware.js";
 
-userRouter.post('/register',regitserUser)
-userRouter.post('/login',loginUser)
-userRouter.get('/profile',protect,getProfile)
+import {
+  loginLimiter,
+  otpLimiter,
+} from "../middleware/authRateLimit.js";
 
-export default userRouter
+const userRouter = express.Router();
+
+// Registration: send OTP
+userRouter.post("/register", otpLimiter, requestOtp);
+
+// Verify OTP: create account
+userRouter.post(
+  "/verify-register-otp",
+  otpLimiter,
+  verifyOtp
+);
+
+// Login
+userRouter.post("/login", loginLimiter, loginUser);
+
+// Profile
+userRouter.get("/profile", protect, getProfile);
+
+export default userRouter;

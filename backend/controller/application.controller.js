@@ -112,6 +112,9 @@ const myApplication=async(req,res)=>{
 
 const getWardenApplications = async (req, res) => {
   try {
+     console.log("Controller reached");
+    console.log("User ID:", req.user._id.toString());
+    console.log("User Role:", req.user.role);
 
     // 1. Logged-in warden ke hostels find karo
     const hostels = await Hosetl.find({
